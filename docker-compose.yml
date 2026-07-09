@@ -1,0 +1,29 @@
+name: lotto-tracker
+
+services:
+  lotto:
+    image: node:22-alpine
+    container_name: lotto # <- nazwa widoczna w docker ps
+    working_dir: /app
+    ports:
+      # Port hosta ustawiasz w .env (APP_PORT) - domyślnie 3417,
+      # żeby nie kolidować z innymi projektami (3000/8080 są zwykle zajęte)
+      - "${APP_PORT:-3417}:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      LOTTO_API_KEY: ${LOTTO_API_KEY}
+    volumes:
+      # Kod montujemy z hosta (żywa edycja + hot reload)
+      - .:/app
+      # ...ale node_modules i .next trzymamy w wolumenach kontenera,
+      # a nie na hoście - dzięki temu na hoście NIE POJAWI SIĘ node_modules
+      # i nie trzeba mieć npm/node zainstalowanego lokalnie
+      - node_modules:/app/node_modules
+      - next_cache:/app/.next
+    command: sh -c "npm install && npm run dev"
+
+volumes:
+  node_modules:
+  next_cache:

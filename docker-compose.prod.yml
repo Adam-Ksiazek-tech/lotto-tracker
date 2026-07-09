@@ -1,0 +1,17 @@
+name: lotto-tracker
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lotto-tracker-app:latest
+    container_name: lotto-tracker-app-prod
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3417}:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      LOTTO_API_KEY: ${LOTTO_API_KEY}
