@@ -1,5 +1,14 @@
-export type LottoDrawResult = {
-  drawDate: string; // ISO date
+export type LottoDraw = {
   drawSystemId: number;
-  results: number[]; // 6 wylosowanych liczb
+  drawDate: string;
+  numbers: number[];
+};
+
+export type LottoDrawsResponse = {
+  meta: {
+    gameType: string;
+    lastFetchedAt: string;
+    source: string;
+  };
+  draws: LottoDraw[];
 };
