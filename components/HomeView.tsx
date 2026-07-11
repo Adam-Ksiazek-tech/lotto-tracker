@@ -5,6 +5,8 @@ import { Layout, Alert, Spin } from "antd";
 import { AppHeader } from "@/components/AppHeader";
 import { LatestDraw } from "@/components/LatestDraw";
 import { DrawHistory } from "@/components/DrawHistory";
+import { RandomLottoBalls } from "@/components/RandomLottoBalls";
+
 import type { LottoDraw } from "@/types/lotto";
 
 const { Content } = Layout;
@@ -37,7 +39,7 @@ export function HomeView() {
       })
       .then((data) => {
         const fetched: LottoDraw[] = Array.isArray(data.draws)
-          ? data.draws.slice(0, 5)
+          ? data.draws.slice(0, 82)
           : [];
         setDraws(fetched);
 
@@ -77,6 +79,7 @@ export function HomeView() {
             showIcon
           />
         )}
+         <RandomLottoBalls />
         {latest && <LatestDraw draw={latest} />}
         {previous.length > 0 && <DrawHistory draws={previous} />}
       </Content>
