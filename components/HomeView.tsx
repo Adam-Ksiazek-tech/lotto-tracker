@@ -6,6 +6,7 @@ import { AppHeader } from "@/components/AppHeader";
 import { LatestDraw } from "@/components/LatestDraw";
 import { DrawHistory } from "@/components/DrawHistory";
 import { RandomLottoBalls } from "@/components/RandomLottoBalls";
+import { Footer } from "@/components/Footer";
 
 import type { LottoDraw } from "@/types/lotto";
 
@@ -39,7 +40,7 @@ export function HomeView() {
       })
       .then((data) => {
         const fetched: LottoDraw[] = Array.isArray(data.draws)
-          ? data.draws.slice(0, 82)
+          ? data.draws.slice(0, 1490)
           : [];
         setDraws(fetched);
 
@@ -83,6 +84,7 @@ export function HomeView() {
         {latest && <LatestDraw draw={latest} />}
         {previous.length > 0 && <DrawHistory draws={previous} />}
       </Content>
+      <Footer />
     </Layout>
   );
 }
