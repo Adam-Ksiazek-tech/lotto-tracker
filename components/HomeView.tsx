@@ -25,7 +25,6 @@ export function HomeView() {
 
     fetch(apiUrl)
       .then(async (res) => {
-        // celowo logujemy surowe info - zobacz to też w Network tab
         console.log("status:", res.status, res.statusText);
         console.log("headers:", Object.fromEntries(res.headers.entries()));
 
@@ -37,7 +36,25 @@ export function HomeView() {
         return res.json();
       })
       .then((data) => {
-        setDraws(Array.isArray(data.draws) ? data.draws.slice(0, 5) : []);
+        const fetched: LottoDraw[] = Array.isArray(data.draws)
+          ? data.draws.slice(0, 5)
+          : [];
+        setDraws(fetched);
+
+        // Zapis do naszej bazy w tle - front pobrał dane (bo backend nie
+        // ma wychodzącego dostępu do lottostats.pl), więc to front
+        // przekazuje je dalej do zapisu. Nie blokujemy UI na wynik tego
+        // zapisu - jeśli się nie uda, użytkownik i tak widzi wyniki,
+        // po prostu nie trafią jeszcze do bazy.
+        if (fetched.length > 0) {
+          fetch("/api/draws", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ draws: fetched }),
+          }).catch((err) => {
+            console.error("Nie udało się zapisać losowań do bazy:", err);
+          });
+        }
       })
       .catch((err) => {
         setError(err instanceof Error ? err.message : "Nieznany błąd");
