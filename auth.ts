@@ -59,6 +59,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       // w naszej bazie z ustawionym password_hash.
       if (account?.provider === "github") {
         const email = user.email?.toLowerCase();
+
+        // console.log("[signIn check] email z GitHub:", email, "| allowedEmails:", allowedEmails);
+        
         if (!email || !allowedEmails.includes(email)) {
           return false;
         }
