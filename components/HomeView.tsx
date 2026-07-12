@@ -133,7 +133,12 @@ export function HomeView({ isLoggedIn }: { isLoggedIn: boolean }) {
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Layout className="min-h-screen !bg-slate-50 dark:!bg-slate-950">
         <AppHeader />
-        {latest && <LatestDraw draw={latest} />}
+
+        <div className="max-w-6xl mx-auto w-full px-4 sm:px-8 pt-4 sm:pt-8">
+          
+            {latest && <LatestDraw draw={latest} />}
+          
+        </div>
 
         {isLoggedIn ? (
           <Layout className="!bg-transparent max-w-6xl mx-auto w-full flex-col lg:flex-row">
