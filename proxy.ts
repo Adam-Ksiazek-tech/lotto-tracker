@@ -5,8 +5,9 @@ export default auth((req) => {
   const isLoggedIn = !!req.auth;
   const isLoginPage = req.nextUrl.pathname.startsWith("/login");
   const isAuthApi = req.nextUrl.pathname.startsWith("/api/auth");
+  const isPublicPage = req.nextUrl.pathname === "/";
 
-  if (isAuthApi) return;
+  if (isAuthApi || isPublicPage) return;
 
   if (!isLoggedIn && !isLoginPage) {
     const loginUrl = new URL("/login", req.nextUrl);

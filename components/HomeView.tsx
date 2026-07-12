@@ -17,7 +17,10 @@ const { Content, Sider } = Layout;
 
 const MAX_SELECTED = 6;
 
-export function HomeView() {
+type Props = {
+  isLoggedIn: boolean;
+};
+export function HomeView({ isLoggedIn }: { isLoggedIn: boolean }) {
   const [draws, setDraws] = useState<LottoDraw[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -130,45 +133,34 @@ export function HomeView() {
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       <Layout className="min-h-screen !bg-slate-50 dark:!bg-slate-950">
         <AppHeader />
-        <Layout className="!bg-transparent max-w-6xl mx-auto w-full flex-col lg:flex-row">
-          <Content className="p-4 sm:p-8 flex flex-col gap-6">
-            {loading && <Spin />}
-            {error && (
-              <Alert
-                type="error"
-                message="Nie udało się pobrać wyników"
-                description={error}
-                showIcon
-              />
-            )}
-            <RandomLottoBalls />
-            {latest && <LatestDraw draw={latest} />}
-            {previous.length > 0 && <DrawHistory draws={previous} />}
-          </Content>
-          <Sider
-            width={340}
-            theme="light"
-            breakpoint="lg"
-            collapsedWidth={0}
-            trigger={null}
-            className="!bg-transparent p-4 sm:p-8 pt-0 lg:pt-8 pl-4 sm:pl-8 lg:pl-0 !max-w-full lg:!max-w-[340px] !flex-none lg:!flex-shrink-0"
-            style={{ flex: "0 0 auto" }}
-          >
-            <div className="flex flex-col gap-6">
-              <BallDropZone
-                selected={selected}
-                onRemove={(n) => setSelected((prev) => prev.filter((x) => x !== n))}
-              />
-              <MatchResults
-                selected={selected}
-                matches={matches}
-                matchLoading={matchLoading}
-                matchError={matchError}
-              />
-              <AllLottoBalls selected={selected} />
-            </div>
-          </Sider>
-        </Layout>
+        {latest && <LatestDraw draw={latest} />}
+
+        {isLoggedIn ? (
+          <Layout className="!bg-transparent max-w-6xl mx-auto w-full flex-col lg:flex-row">
+            <Content className="p-4 sm:p-8 flex flex-col gap-6">
+              {loading && <Spin />}
+              {error && (
+                <Alert type="error" message="Nie udało się pobrać wyników" description={error} showIcon />
+              )}
+              <RandomLottoBalls />
+              {previous.length > 0 && <DrawHistory draws={previous} />}
+            </Content>
+            <Sider width={340} theme="light" breakpoint="lg" collapsedWidth={0} trigger={null}
+              className="!bg-transparent p-4 sm:p-8 pt-0 lg:pt-8 pl-4 sm:pl-8 lg:pl-0 !max-w-full lg:!max-w-[340px] !flex-none lg:!flex-shrink-0"
+              style={{ flex: "0 0 auto" }}>
+              <div className="flex flex-col gap-6">
+                <BallDropZone selected={selected} onRemove={(n) => setSelected(prev => prev.filter(x => x !== n))} />
+                <MatchResults selected={selected} matches={matches} matchLoading={matchLoading} matchError={matchError} />
+                <AllLottoBalls selected={selected} />
+              </div>
+            </Sider>
+          </Layout>
+        ) : (
+          <div className="max-w-3xl mx-auto w-full p-4 sm:p-8">
+            <Alert message="Zaloguj się, aby zobaczyć więcej funkcji" type="info" showIcon />
+          </div>
+        )}
+
         <Footer />
       </Layout>
     </DndContext>
