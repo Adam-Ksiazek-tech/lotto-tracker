@@ -35,27 +35,18 @@ export function HomeView({ isLoggedIn }: { isLoggedIn: boolean }) {
   );
 
   useEffect(() => {
-    const apiUrl = process.env.NEXT_PUBLIC_LOTTO_API_URL;
-
-    if (!apiUrl) {
-      setError("Brak zmiennej NEXT_PUBLIC_LOTTO_API_URL");
-      setLoading(false);
-      return;
-    }
-
-    fetch(apiUrl)
-      .then(async (res) => {
-        console.log("status:", res.status, res.statusText);
-        console.log("headers:", Object.fromEntries(res.headers.entries()));
+    async function loadDraws() {
+      try {
+        const res = await fetch("/api/draws/get-data");
 
         if (!res.ok) {
-          const body = await res.text().catch(() => "");
-          console.error("body:", body);
-          throw new Error(`${res.status} ${res.statusText}`);
+          const body = await res.json().catch(() => ({}));
+          setError(body?.error ?? `${res.status} ${res.statusText}`);
+          setLoading(false);
+          return;
         }
-        return res.json();
-      })
-      .then((data) => {
+
+        const data = await res.json();
         const fetched: LottoDraw[] = Array.isArray(data.draws)
           ? data.draws.slice(0, 82)
           : [];
@@ -70,11 +61,14 @@ export function HomeView({ isLoggedIn }: { isLoggedIn: boolean }) {
             console.error("Nie udało się zapisać losowań do bazy:", err);
           });
         }
-      })
-      .catch((err) => {
+      } catch (err) {
         setError(err instanceof Error ? err.message : "Nieznany błąd");
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadDraws();
   }, []);
 
   useEffect(() => {
