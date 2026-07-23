@@ -7,7 +7,10 @@ import {
   MoonOutlined,
   SunOutlined,
   UserOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
+
+import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useThemeMode } from "@/app/theme-provider";
 import { LottoBall } from "./LottoBall";
@@ -46,11 +49,20 @@ export function AppHeader() {
               menu={{
                 items: [
                   {
+                    key: "setup",
+                    label: <Link href="/setup" className="text-slate-900 dark:text-slate-100">Ustawienia</Link>,
+                    icon: <SettingOutlined />,
+                  },
+                  {
+                    key: "divider",
+                    type: "divider",
+                  },
+                  {
                     key: "logout",
                     label: "Wyloguj",
                     icon: <LogoutOutlined />,
                     onClick: () => signOut({ callbackUrl: "/login" }),
-                  },
+                  },                  
                 ],
               }}
             >
@@ -58,8 +70,8 @@ export function AppHeader() {
                 <Avatar icon={<UserOutlined />} size="small" />
                 <Text className="hidden sm:inline dark:!text-slate-200">
                   {session.user.email}
-                </Text>
-              </div>
+                </Text>                
+              </div>              
             </Dropdown>
           ) : (
             <Button icon={<LoginOutlined />} onClick={() => signIn()}>
