@@ -8,11 +8,6 @@ export const metadata = {
 
 export default async function SetupPage() {
   const session = await auth();
-
-  console.log({
-    a11: "*****",
-    session,
-  });
   
   if (!session) {
     redirect("/login");
