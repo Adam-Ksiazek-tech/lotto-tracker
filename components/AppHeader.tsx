@@ -31,10 +31,12 @@ export function AppHeader() {
     >
       <div className="flex items-center justify-between w-full max-w-6xl">
         <div className="flex items-center gap-3">
-          <LottoBall number={6} />
-          <span className="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-            Lotto Tracker
-          </span>
+          <a href="/">
+            <LottoBall number={6} />
+            <span className="text-lg font-semibold tracking-tight text-slate-900 dark:text-slate-100 ml-2">
+              Lotto Tracker
+            </span>
+          </a>
         </div>
 
         <div className="flex items-center gap-4">
