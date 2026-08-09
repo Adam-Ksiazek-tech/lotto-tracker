@@ -79,7 +79,16 @@ export async function GET() {
 
     if (apiSource === "lotto.pl") {
       rawData = await fetchFromLotto();
-      // Transformuj dane z lotto.pl
+      
+      // Type guard: sprawdź, że rawData jest tablicą przed передачей do transformLottoPlData
+      if (!Array.isArray(rawData)) {
+        return Response.json(
+          { error: "Lotto.pl API zwróciło nieprawidłowy format" },
+          { status: 502 }
+        );
+      }
+      
+      // Teraz TypeScript wie, że rawData jest any[], a transformLottoPlData ją zaakceptuje
       const draws = transformLottoPlData(rawData);
       
       if (!Array.isArray(draws) || !draws.every(isLottoDraw)) {
