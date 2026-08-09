@@ -17,5 +17,12 @@ JPEG -> webP
 docker exec -it lotto node scripts/compress-images.js /photos
 ```
 
+##Przegrywanie zdjęć na serwer
+
+```
+scp -r -i ~/.ssh/id_rsa ~/Dokumenty/zdjecia_***/output/* adas@31.***.121:~/apps/lotto-tracker/public/shoes/
+```
+
+
 
 

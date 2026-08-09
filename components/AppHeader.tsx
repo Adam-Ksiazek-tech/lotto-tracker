@@ -8,6 +8,7 @@ import {
   SunOutlined,
   UserOutlined,
   SettingOutlined,
+  PictureOutlined,
 } from "@ant-design/icons";
 
 import Link from "next/link";
@@ -50,6 +51,11 @@ export function AppHeader() {
             <Dropdown
               menu={{
                 items: [
+                  {
+                    key: "shoes",
+                    label: <Link href="/shoes" className="text-slate-900 dark:text-slate-100">Buty</Link>,
+                    icon: <PictureOutlined />,
+                  },
                   {
                     key: "setup",
                     label: <Link href="/setup" className="text-slate-900 dark:text-slate-100">Ustawienia</Link>,
