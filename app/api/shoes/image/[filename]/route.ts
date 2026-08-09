@@ -22,9 +22,18 @@ export async function GET(
     const filePath = path.join(process.cwd(), "public/shoes", filename);
     const buffer = fs.readFileSync(filePath);
 
+    // Określ typ MIME na podstawie rozszerzenia
+    const ext = path.extname(filename).toLowerCase();
+    let contentType = "application/octet-stream";
+    
+    if (ext === ".webp") contentType = "image/webp";
+    if (ext === ".pdf") contentType = "application/pdf";
+    if (ext === ".jpg" || ext === ".jpeg") contentType = "image/jpeg";
+    if (ext === ".png") contentType = "image/png";
+
     return new NextResponse(buffer, {
       headers: {
-        "Content-Type": "image/webp",
+        "Content-Type": contentType,
         "Cache-Control": "public, max-age=3600",
       },
     });
