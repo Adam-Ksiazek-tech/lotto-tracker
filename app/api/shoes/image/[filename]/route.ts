@@ -5,14 +5,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { filename: string } }
+  { params }: { params: Promise<{ filename: string }> }
 ) {
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const filename = params.filename;
+  const { filename } = await params;
 
   if (filename.includes("..") || filename.includes("/")) {
     return NextResponse.json({ error: "Invalid filename" }, { status: 400 });
@@ -20,9 +20,6 @@ export async function GET(
 
   try {
     const filePath = path.join(process.cwd(), "public/shoes", filename);
-    console.log("Szukam:", filePath);
-    console.log("Istnieje:", fs.existsSync(filePath));
-    
     const buffer = fs.readFileSync(filePath);
 
     return new NextResponse(buffer, {
@@ -32,7 +29,6 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error("Błąd:", error);
     return NextResponse.json({ error: "File not found" }, { status: 404 });
   }
 }
