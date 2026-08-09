@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
     }
 
     const files = fs.readdirSync(shoesDir).filter((file) =>
-      /\.(webp|jpg|jpeg|png)$/i.test(file)
+      /\.(webp|jpg|jpeg|png|pdf)$/i.test(file)
     );
 
     const images = files.map((file) => ({
