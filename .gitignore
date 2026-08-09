@@ -64,3 +64,5 @@ coverage/
 .turbo/
 
 .db.md
+
+public/shoes/
