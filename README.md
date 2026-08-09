@@ -96,7 +96,8 @@ zoptymalizowany multi-stage `Dockerfile` (obraz `standalone`, mniejszy,
 bez dev-dependencies):
 
 ```bash
-docker compose -f docker-compose.prod.yml up --build
+docker compose -f docker-compose.prod.yml build
+docker compose -f docker-compose.prod.yml up -d
 ```
 
 Appka wystartuje na tym samym `APP_PORT` z `.env`, ale w trybie produkcyjnym
