@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
 
     const images = files.map((file) => ({
       name: file,
-      src: `/api/shoes/image?file=${encodeURIComponent(file)}`,
+      src: `/api/shoes/image/${encodeURIComponent(file)}`,
     }));
 
     images.sort((a, b) => a.name.localeCompare(b.name));
