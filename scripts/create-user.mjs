@@ -4,7 +4,7 @@
 // do żadnego pliku ani do gita.
 //
 // Użycie (w kontenerze):
-//   docker-compose exec app node scripts/create-user.mjs email@example.com MojeHaslo123 "Jan Kowalski"
+//   docker-compose exec lotto node scripts/create-user.mjs email@example.com MojeHaslo123 "Jan Kowalski"
 
 import pg from "pg";
 import bcrypt from "bcryptjs";

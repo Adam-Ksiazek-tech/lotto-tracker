@@ -24,6 +24,9 @@ services:
       # i nie trzeba mieć npm/node zainstalowanego lokalnie
       - node_modules:/app/node_modules
       - next_cache:/app/.next
+
+      - ~/Dokumenty/zdjecia_buty_poddasze_09082026:/photos
+
     command: sh -c "npm install && npm run dev"
 
 volumes:

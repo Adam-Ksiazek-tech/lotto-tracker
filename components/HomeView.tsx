@@ -35,8 +35,9 @@ export function HomeView({ isLoggedIn }: { isLoggedIn: boolean }) {
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
     useSensor(TouchSensor, { activationConstraint: { delay: 150, tolerance: 5 } }),
   );
-
+  
   const [latest, ...previous] = draws;
+  console.log("previous", previous);  
 
   return (
     <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
