@@ -1,13 +1,14 @@
 "use client";
 
-
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
-import Image from "next/image";
-import { Empty, Spin } from "antd";
+import { Empty, Spin, } from "antd";
+import { Button } from "antd";
 import { useEffect, useState } from "react";
+import { FileOutlined, DownloadOutlined } from "@ant-design/icons";
 
 import { AppHeader } from "@/components/AppHeader";
+import { useThemeMode } from "@/app/theme-provider";
 
 interface ShoeImage {
   name: string;
@@ -18,6 +19,7 @@ export default function ShoesPage() {
   const { data: session, status } = useSession();
   const [images, setImages] = useState<ShoeImage[]>([]);
   const [loading, setLoading] = useState(true);
+  const { mode } = useThemeMode(); // ← Użyj globalnego theme
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -53,9 +55,12 @@ export default function ShoesPage() {
 
   if (images.length === 0) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <Empty description="Brak zdjęć" />
-      </div>
+      <>
+        <AppHeader />
+        <div className="flex justify-center items-center min-h-screen">
+          <Empty description="Brak zdjęć" />
+        </div>
+      </>
     );
   }
 
@@ -68,22 +73,45 @@ export default function ShoesPage() {
         </h1>
 
         <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
-          {images.map((image) => (
-            <div
-              key={image.name}
-              className="break-inside-avoid rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 bg-slate-100 dark:bg-slate-800"
-            >
-              <Image
-                src={image.src}
-                alt={image.name}
-                width={400}
-                height={500}
-                className="w-full h-auto object-cover"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                priority={false}
-              />
-            </div>
-          ))}
+          {images.map((image) => {
+            const isPDF = image.src.endsWith(".pdf");
+
+            return (
+              <div
+                key={image.name}
+                className="break-inside-avoid rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200 bg-slate-100 dark:bg-slate-800"
+              >
+                {isPDF ? (
+                  <div className="h-64 bg-slate-200 dark:bg-slate-700 flex flex-col items-center justify-center p-4">
+                  <a
+                    href={image.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center h-64 bg-slate-200 dark:bg-slate-700 cursor-pointer"
+                  >
+                    <div className="pb-4">  
+                      <FileOutlined style={{ color: mode === 'dark' ? '#fff' : '#000', fontSize: '28px' }} />
+                    </div>
+                    
+                  </a>
+                  
+                      <embed
+                        src={image.src}
+                        type="application/pdf"
+                        className="w-full h-full"
+                      />
+                </div>
+                ) : (
+                  <img
+                    src={image.src}
+                    alt={image.name}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </>
