@@ -25,7 +25,7 @@ Otwórz `.env` i uzupełnij:
 ### Krok 2 — odpal kontener
 
 ```bash
-docker compose up
+docker-compose up
 ```
 
 Za pierwszym razem kontener:

@@ -19,3 +19,5 @@ services:
       LOTTO_API_KEY: ${LOTTO_API_KEY}
       LOTTO_PUBLIC_API_URL: ${LOTTO_PUBLIC_API_URL}
       
+    volumes:      
+      - ./public/shoes:/app/public/shoes:ro

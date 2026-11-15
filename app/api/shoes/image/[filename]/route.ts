@@ -1,3 +1,4 @@
+//app/api/shoes/image/[filename]/route.ts
 import fs from "fs";
 import path from "path";
 import { auth } from "@/auth";
